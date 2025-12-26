@@ -1,5 +1,6 @@
-﻿// CimBios.Core libraries features example app
+// CimBios.Core libraries features example app
 
+using System.IO.Compression;
 using System.Reflection;
 using CimBios.Core.CimModel.DataModel.Document;
 using CimBios.Core.CimModel.DataModel.Utils;
@@ -110,9 +111,15 @@ document.RemoveObject(fullModel);
 
 // ---------------------------------------------------------------------------
 
+// ! You can use any seek-support stream
+var compressedFileStream = File.OpenRead("Models\\ieee8500.xml.gz");
+var decompressor = new GZipStream(compressedFileStream, CompressionMode.Decompress);
+var reader = new StreamReader(decompressor);
+var text = reader.ReadToEnd();
+
 // 💡 Load CIMXML model
 var ieee8500Document = new CimDocument(schema, typeLib, oidDescriptorFactory, logger);
-ieee8500Document.Load("Models\\ieee8500.xml", new RdfXmlSerializerFactory());
+ieee8500Document.Parse(text, new RdfXmlSerializerFactory());
 
 logger.Information("{count} objects loaded", ieee8500Document.GetAllObjects().Count());
 
