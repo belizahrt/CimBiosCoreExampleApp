@@ -107,8 +107,6 @@ fullModel.description = "Example model";
 document.Save("example.xml", new RdfXmlSerializerFactory());
 // Check out result file in output project directory
 
-document.RemoveObject(fullModel);
-
 // ---------------------------------------------------------------------------
 
 // ! You can use any seek-support stream
@@ -145,3 +143,4 @@ var substationCopy = ieee8500Document.GetObject<Substation>(substation.OID);
 diffModel.Save("diff.xml", new RdfXmlSerializerFactory());
 
 return;
+
